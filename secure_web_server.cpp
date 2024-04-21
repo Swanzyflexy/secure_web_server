@@ -60,34 +60,7 @@ std::string get_response(const std::string& request)
             }
         }
 
-        if (isFormSubmission)
-        {
-            // Read the form submission data
-            std::getline(iss, formSubmissionData, '\0');
-
-            // Save/store the form submission data
-            std::ofstream outfile("submissions.txt", std::ios::app);
-            if (outfile)
-            {
-                outfile << formSubmissionData << std::endl;
-                outfile.close();
-            }
-        }
-
-        response += "HTTP/1.1 200 OK\r\n";
-        response += "Content-Type: text/html\r\n";
-        response += "\r\n";
-        response += "<h1>Form Submitted Successfully!</h1>";
-    }
-    else
-    {
-        response += "HTTP/1.1 400 Bad Request\r\n";
-        response += "\r\n";
-        response += "<h1>400 Bad Request</h1>";
-    }
-
-    return response;
-}
+        
 
 void session(std::shared_ptr<tcp::socket> sock)
 {
@@ -115,7 +88,19 @@ void session(std::shared_ptr<tcp::socket> sock)
     }
 }
 
+void server(boost::asio::io_context& io_context, unsigned short port)
+{
+    tcp::acceptor a(io_context, tcp::endpoint(tcp::v4(), port));
 
+    for (;;)
+    {
+        std::shared_ptr<tcp::socket> sock = std::make_shared<tcp::socket>(io_context);
+
+        a.accept(*sock);
+
+        std::thread(session, sock).detach();
+    }
+}
 
 int main(int argc, char* argv[])
 {
