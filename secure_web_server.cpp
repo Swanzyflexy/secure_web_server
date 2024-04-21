@@ -115,19 +115,7 @@ void session(std::shared_ptr<tcp::socket> sock)
     }
 }
 
-void server(boost::asio::io_context& io_context, unsigned short port)
-{
-    tcp::acceptor a(io_context, tcp::endpoint(tcp::v4(), port));
 
-    for (;;)
-    {
-        std::shared_ptr<tcp::socket> sock = std::make_shared<tcp::socket>(io_context);
-
-        a.accept(*sock);
-
-        std::thread(session, sock).detach();
-    }
-}
 
 int main(int argc, char* argv[])
 {
