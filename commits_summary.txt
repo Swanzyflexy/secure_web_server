@@ -1,0 +1,4 @@
+1061bb6 - swanzyflexy, 2024-04-21 :  implementing post request
+7497c9b - swanzyflexy, 2024-04-19 : implementing the Get request
+f0bad7a - swanzyflexy, 2024-04-18 : text file created to receive data
+95cddf5 - swanzyflexy, 2024-04-18 : initial commit
